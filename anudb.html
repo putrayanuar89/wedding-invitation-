@@ -626,7 +626,9 @@
 
         async function checkGuestToken() {
             const urlParams = new URLSearchParams(window.location.search);
-            guestToken = urlParams.get('guest');
+            // Mendukung parameter 'token' maupun 'guest'
+            guestToken = urlParams.get('token') || urlParams.get('guest');
+            
             const guestNameEl = document.getElementById('guest-name');
             const wishNameInput = document.getElementById('wish-name');
             const verifiedIcon = document.getElementById('verified-icon');

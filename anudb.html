@@ -174,9 +174,17 @@
             align-items: center;
             justify-content: center;
             border: 1px solid rgba(229, 213, 190, 0.8);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: opacity 0.4s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
         }
+
+        /* PERBAIKAN: Style sembunyikan tombol navigasi pada cover */
+        .nav-arrow.nav-hidden {
+            opacity: 0 !important;
+            pointer-events: none !important;
+            visibility: hidden !important;
+        }
+
         .nav-arrow:hover {
             transform: translateY(-50%) scale(1.12);
             background-color: #ffffff;
@@ -217,14 +225,16 @@
     <audio id="bg-music" loop>
         <source src="videoplayback_xrSY6REu.mp3" type="audio/mpeg">
     </audio>
+
     <button onclick="toggleMusic()" class="audio-btn w-11 h-11 bg-white/90 backdrop-blur-md rounded-full shadow-md flex items-center justify-center text-amber-900 hover:bg-white transition border border-amber-200/60">
         <i id="music-icon" class="fas fa-music text-sm"></i>
     </button>
 
-    <button id="prev-btn" onclick="flipPrev()" class="nav-arrow">
+    <!-- DIPERBAIKI: Mengisi class nav-hidden di awal agar sembunyi saat Cover Depan aktif -->
+    <button id="prev-btn" onclick="flipPrev()" class="nav-arrow nav-hidden">
         <i class="fas fa-chevron-left text-base md:text-lg"></i>
     </button>
-    <button id="next-btn" onclick="flipNext()" class="nav-arrow">
+    <button id="next-btn" onclick="flipNext()" class="nav-arrow nav-hidden">
         <i class="fas fa-chevron-right text-base md:text-lg"></i>
     </button>
 
@@ -387,6 +397,33 @@
                 </div>
             </div>
 
+            <div class="page">
+                <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
+                    <div class="space-y-0.5 w-full">
+                        <p class="text-[10px] tracking-[0.2em] uppercase text-amber-800 font-medium">Our Memories</p>
+                        <h3 class="font-serif-title text-xl font-bold text-amber-950">Galeri Foto</h3>
+                        <div class="w-8 h-[1px] bg-amber-700 mx-auto"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5 my-auto w-full max-w-xs">
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery1" alt="Galeri 1" class="w-full h-24 object-cover rounded">
+                        </div>
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery2" alt="Galeri 2" class="w-full h-24 object-cover rounded">
+                        </div>
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery3" alt="Galeri 3" class="w-full h-24 object-cover rounded">
+                        </div>
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery4" alt="Galeri 4" class="w-full h-24 object-cover rounded">
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <p class="text-[10px] text-stone-500 font-serif-title italic font-medium">"Setiap cerita cinta itu indah, namun cerita kita adalah favoritku."</p>
+                    </div>
+                </div>
+            </div>
+
             <div class="page text-center">
                 <div class="w-full h-full flex flex-col justify-start items-center py-1 text-center overflow-hidden">
                     <div class="w-full shrink-0 mb-1">
@@ -419,6 +456,48 @@
                                 <i class="fas fa-spinner fa-spin mr-1"></i> Memuat ucapan tamu...
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page">
+                <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
+                    <div class="space-y-0.5 w-full">
+                        <p class="text-[10px] tracking-[0.2em] uppercase text-amber-800 font-medium">Wedding Gift</p>
+                        <h3 class="font-serif-title text-xl font-bold text-amber-950">Amplop Digital</h3>
+                        <div class="w-8 h-[1px] bg-amber-700 mx-auto"></div>
+                    </div>
+                    <div class="space-y-2.5 my-auto w-full max-w-xs">
+                        <p class="text-[11px] text-stone-600 font-serif-title leading-relaxed">
+                            Doa restu Anda merupakan hadiah terindah bagi kami. Namun jika ingin memberikan hadiah berupa tanda kasih, Anda dapat menyalurkannya melalui:
+                        </p>
+                        
+                        <div class="bg-white p-2.5 rounded-xl border border-amber-200/80 shadow-2xs space-y-1">
+                            <div class="flex items-center justify-between border-b border-amber-100 pb-1">
+                                <span class="font-bold text-amber-950 text-xs">Bank BCA</span>
+                                <i class="fas fa-credit-card text-amber-800 text-xs"></i>
+                            </div>
+                            <p class="text-stone-800 font-mono font-bold text-xs tracking-wider" id="rekening-1">1234 5678 90</p>
+                            <p class="text-[10px] text-stone-500 font-serif-title">a.n. Mempelai Pria</p>
+                            <button onclick="copyToClipboard('1234567890', this)" class="w-full py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] rounded font-medium transition flex items-center justify-center gap-1 mt-1">
+                                <i class="far fa-copy text-[9px]"></i> <span>Salin No. Rekening</span>
+                            </button>
+                        </div>
+
+                        <div class="bg-white p-2.5 rounded-xl border border-amber-200/80 shadow-2xs space-y-1">
+                            <div class="flex items-center justify-between border-b border-amber-100 pb-1">
+                                <span class="font-bold text-amber-950 text-xs">Bank Mandiri</span>
+                                <i class="fas fa-credit-card text-amber-800 text-xs"></i>
+                            </div>
+                            <p class="text-stone-800 font-mono font-bold text-xs tracking-wider" id="rekening-2">0987 6543 21</p>
+                            <p class="text-[10px] text-stone-500 font-serif-title">a.n. Mempelai Wanita</p>
+                            <button onclick="copyToClipboard('0987654321', this)" class="w-full py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] rounded font-medium transition flex items-center justify-center gap-1 mt-1">
+                                <i class="far fa-copy text-[9px]"></i> <span>Salin No. Rekening</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <p class="text-[10px] text-amber-900 font-serif-title font-semibold italic">Terima kasih atas doa & tanda kasih Anda</p>
                     </div>
                 </div>
             </div>
@@ -621,10 +700,29 @@
             });
         }
 
+        // PERBAIKAN: Fungsi kontrol visibilitas tombol navigasi
+        function updateNavButtonsVisibility() {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+
+            const frontCoverOpen = document.getElementById('front-cover').classList.contains('open-front');
+            const backCoverVisible = !document.getElementById('back-cover').classList.contains('hide-back');
+
+            // Jika Cover Depan belum dibuka ATAU Cover Belakang sedang tampil -> Sembunyikan Navigasi
+            if (!frontCoverOpen || backCoverVisible) {
+                if (prevBtn) prevBtn.classList.add('nav-hidden');
+                if (nextBtn) nextBtn.classList.add('nav-hidden');
+            } else {
+                if (prevBtn) prevBtn.classList.remove('nav-hidden');
+                if (nextBtn) nextBtn.classList.remove('nav-hidden');
+            }
+        }
+
         function openFrontCover() {
             if (!isGuestVerified) return;
             toggleMusic(true);
             document.getElementById('front-cover').classList.add('open-front');
+            updateNavButtonsVisibility(); // Munculkan navigasi setelah cover dibuka
         }
 
         function closeBackCover() {
@@ -633,6 +731,7 @@
                 const lastIndex = pageFlip.getPageCount() - 1;
                 pageFlip.flip(lastIndex);
             }
+            updateNavButtonsVisibility(); // Munculkan navigasi kembali
         }
 
         function flipPrev() { 
@@ -640,6 +739,7 @@
             const currentPage = pageFlip.getCurrentPageIndex();
             if (currentPage === 0) {
                 document.getElementById('front-cover').classList.remove('open-front');
+                updateNavButtonsVisibility(); // Sembunyikan navigasi karena kembali ke Cover Depan
             } else {
                 pageFlip.flipPrev(); 
             }
@@ -657,6 +757,7 @@
 
             if (isAtEnd) {
                 document.getElementById('back-cover').classList.remove('hide-back');
+                updateNavButtonsVisibility(); // Sembunyikan navigasi saat Cover Belakang tampil
             } else {
                 pageFlip.flipNext();
             }
@@ -749,16 +850,13 @@
             }
         }
 
-        // PERBAIKAN LOGIKA: Menimpa ucapan jika nama yang sama sudah ada di UI
         function renderWishItem(nama, ucapan, timestamp, isNewSubmit = false) {
             const wishContainer = document.getElementById('wish-container');
             if (!wishContainer) return;
 
-            // Hapus pesan kosong jika ada
             const emptyText = wishContainer.querySelector('p.italic');
             if (emptyText) emptyText.remove();
 
-            // Cari apakah elemen ucapan dengan nama yang sama sudah ada
             const existingItems = Array.from(wishContainer.children);
             const existingElement = existingItems.find(el => {
                 const nameEl = el.querySelector('.wish-author');
@@ -766,18 +864,15 @@
             });
 
             if (existingElement) {
-                // Jika sudah ada, timpa isi pesan dan timestamp-nya
                 const msgEl = existingElement.querySelector('.wish-text');
                 const timeEl = existingElement.querySelector('.wish-time');
                 if (msgEl) msgEl.innerText = ucapan;
                 if (timeEl) timeEl.innerText = timestamp || '';
 
-                // Jika pengguna baru saja mengirim ucapan baru, pindahkan kotaknya ke paling atas
                 if (isNewSubmit) {
                     wishContainer.insertBefore(existingElement, wishContainer.firstChild);
                 }
             } else {
-                // Jika belum ada, buat elemen ucapan baru
                 const div = document.createElement('div');
                 div.className = "bg-white p-2 rounded-lg border border-amber-200/60 shadow-2xs space-y-0.5 text-center";
                 div.innerHTML = `
@@ -824,13 +919,9 @@
                 const result = await response.json();
 
                 if (result.success) {
-                    // Panggil renderWishItem dengan isNewSubmit = true
                     renderWishItem(result.data.nama, result.data.ucapan, result.data.timestamp, true);
                     wishMessageInput.value = '';
-                    
-                    // Re-fetch ulang ucapan publik untuk menyelaraskan jumlah & urutan dari server
                     loadPublicWishes();
-                    
                     alert("Terima kasih! Ucapan Anda telah berhasil diperbarui.");
                 } else {
                     alert(result.message || "Gagal mengirim ucapan.");
@@ -841,6 +932,18 @@
                 btnSubmit.disabled = false;
                 btnSubmit.innerHTML = `<i class="fas fa-paper-plane text-[10px]"></i> Kirim Ucapan`;
             }
+        }
+
+        function copyToClipboard(text, btnElement) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btnElement.innerHTML;
+                btnElement.innerHTML = `<i class="fas fa-check text-[9px] text-green-700"></i> <span class="text-green-700">Tersalin!</span>`;
+                setTimeout(() => {
+                    btnElement.innerHTML = originalText;
+                }, 2000);
+            }).catch(() => {
+                alert("Gagal menyalin nomor rekening.");
+            });
         }
 
         const music = document.getElementById("bg-music");

@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Undangan Pernikahan Interaktif</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- PageFlip JS -->
+    <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1a1a1a;
+            color: #333333;
+            overflow: hidden;
+            touch-action: pan-y;
+        }
+
+        .font-script {
+            font-family: 'Alex Brush', cursive;
+        }
+
+        /* Styles untuk Halaman Flipbook */
+        .page {
+            padding: 1.25rem;
+            background-color: #fcfbf9;
+            border: 1px solid #e2d9cc;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.03);
+            background-clip: padding-box;
+        }
+
+        /* Custom Scrollbar */
+        .page::-webkit-scrollbar, .wish-feed::-webkit-scrollbar, .scroll-cover::-webkit-scrollbar {
+            width: 4px;
+        }
+        .page::-webkit-scrollbar-thumb, .wish-feed::-webkit-scrollbar-thumb, .scroll-cover::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        /* Overlay Cover dengan Animasi Scroll/Slide Murni */
+        .cover-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 30;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow-y: auto;
+            background-color: #fbf9f5;
+            will-change: transform;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+        }
+
+        /* Cover Depan Terbuka (Slide Ke Atas) */
+        .cover-overlay.open-front {
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+
+        /* Cover Belakang Sembunyi / Terbuka */
+        .cover-overlay.hide-back {
+            transform: translateY(100%);
+            pointer-events: none;
+        }
+
+        /* Controls Floating UI */
+        .audio-btn {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 50;
+        }
+
+        .nav-arrow {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 20;
+            transition: all 0.2s ease;
+        }
+        .nav-arrow:hover {
+            scale: 1.1;
+        }
+
+        input:read-only {
+            background-color: #f1f5f9;
+            color: #475569;
+            cursor: not-allowed;
+            border-color: #cbd5e1;
+        }
+    </style>
+</head>
+<body class="w-screen h-screen flex items-center justify-center relative bg-stone-900">
+
+    <!-- GANTI DENGAN URL WEB APP GOOGLE APPS SCRIPT ANDA -->
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx.../exec";
+    </script>
+
+    <!-- Background Music -->
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Music Control Button -->
+    <button onclick="toggleMusic()" class="audio-btn w-11 h-11 bg-white/80 backdrop-blur-md rounded-full shadow-lg flex items-center justify-center text-stone-700 hover:bg-white transition border border-stone-200">
+        <i id="music-icon" class="fas fa-music text-base"></i>
+    </button>
+
+    <!-- Navigation Arrows untuk Flipbook Isi -->
+    <button id="prev-btn" onclick="flipPrev()" class="nav-arrow left-2 md:left-6 w-10 h-10 md:w-12 md:h-12 bg-white/80 backdrop-blur-md text-stone-800 rounded-full shadow-xl flex items-center justify-center border border-stone-200">
+        <i class="fas fa-chevron-left text-sm md:text-base"></i>
+    </button>
+    <button id="next-btn" onclick="flipNext()" class="nav-arrow right-2 md:right-6 w-10 h-10 md:w-12 md:h-12 bg-white/80 backdrop-blur-md text-stone-800 rounded-full shadow-xl flex items-center justify-center border border-stone-200">
+        <i class="fas fa-chevron-right text-sm md:text-base"></i>
+    </button>
+
+    <!-- ========================================== -->
+    <!-- COVER DEPAN (ANIMASI SCROLL SLIDE UP) -->
+    <!-- ========================================== -->
+    <div id="front-cover" class="cover-overlay scroll-cover bg-stone-100 flex items-center justify-center p-4">
+        <div class="text-center max-w-md w-full space-y-6 py-8 my-auto">
+            <p class="text-xs uppercase tracking-widest text-stone-500 font-medium">Undangan Pernikahan</p>
+            <h1 class="font-script text-6xl md:text-7xl text-amber-800 py-2">Pria & Wanita</h1>
+            
+            <div class="bg-white border border-amber-200/80 p-5 rounded-2xl shadow-sm mx-auto max-w-xs">
+                <p class="text-xs text-stone-500 uppercase tracking-wider mb-1.5">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
+                <h2 id="guest-name" class="font-semibold text-stone-800 text-base md:text-lg flex items-center justify-center gap-1.5">
+                    <i class="fas fa-spinner fa-spin text-amber-600 text-sm"></i>
+                    <span class="text-stone-500 font-normal italic text-sm">Memuat data...</span>
+                </h2>
+            </div>
+
+            <button onclick="openFrontCover()" class="px-8 py-3 bg-amber-800 text-white rounded-full font-medium text-sm shadow-lg hover:bg-amber-900 transition flex items-center justify-center gap-2 mx-auto">
+                <i class="fas fa-envelope-open"></i> Buka Undangan
+            </button>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- FLIPBOOK ISI (2 HALAMAN DESKTOP / 1 HALAMAN MOBILE) -->
+    <!-- ========================================== -->
+    <div id="book-wrapper" class="w-full h-full flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-hidden">
+        <div id="book" class="shadow-2xl rounded-lg">
+            
+            <!-- ISI 1: FOTO & QUOTE ISLAMI -->
+            <div class="page text-center">
+                <div class="my-auto space-y-3 py-2">
+                    <div class="relative max-w-xs mx-auto rounded-xl overflow-hidden shadow-md border-2 border-amber-100">
+                        <img src="https://picsum.photos/600/400?wedding" alt="Foto Pasangan" class="w-full h-48 object-cover">
+                    </div>
+                    <h3 class="text-lg font-semibold text-amber-800">Q.S. Ar-Rum: 21</h3>
+                    <p class="text-xs md:text-sm text-stone-600 italic leading-relaxed px-2">
+                        "Dan di antara tanda-tanda kebesaran-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang."
+                    </p>
+                </div>
+            </div>
+
+            <!-- ISI 2: HARAPAN & DOA -->
+            <div class="page text-center">
+                <div class="my-auto space-y-4 py-2 px-2">
+                    <h3 class="text-xl font-semibold text-amber-800">Harapan & Doa</h3>
+                    <div class="w-12 h-0.5 bg-amber-700 mx-auto rounded-full"></div>
+                    <p class="text-xs md:text-sm text-stone-600 leading-relaxed">
+                        Seraya memohon ridho dan rahmat Allah SWT, kami berharap pernikahan ini dapat menjadi ibadah yang bernilai berkah, membimbing keluarga kami menuju keluarga yang sakinah, mawaddah, wa rahmah, serta dikaruniai keturunan yang shalih dan shalihat.
+                    </p>
+                    <p class="text-xs font-semibold text-amber-900 italic">Aamiin ya Rabbal 'Alamin</p>
+                </div>
+            </div>
+
+            <!-- ISI 3: MEMPELAI & ORANG TUA -->
+            <div class="page text-center">
+                <div class="my-auto space-y-4 py-2">
+                    <p class="text-xs uppercase tracking-widest text-stone-500 font-medium">Mempelai Pernikahan</p>
+                    
+                    <div class="space-y-1">
+                        <h2 class="font-script text-4xl text-amber-800">Mempelai Pria, S.T.</h2>
+                        <p class="text-xs text-stone-600">Putra dari Bapak <strong>Nama Bapak Pria</strong><br>& Ibu <strong>Nama Ibu Pria</strong></p>
+                    </div>
+
+                    <div class="text-amber-700 font-script text-2xl">&</div>
+
+                    <div class="space-y-1">
+                        <h2 class="font-script text-4xl text-amber-800">Mempelai Wanita, S.Pd.</h2>
+                        <p class="text-xs text-stone-600">Putri dari Bapak <strong>Nama Bapak Wanita</strong><br>& Ibu <strong>Nama Ibu Wanita</strong></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ISI 4: TANGGAL & COUNTDOWN -->
+            <div class="page text-center">
+                <div class="my-auto space-y-4 py-2">
+                    <h3 class="text-xl font-semibold text-amber-800">Waktu Acara</h3>
+                    <div class="w-12 h-0.5 bg-amber-700 mx-auto rounded-full"></div>
+
+                    <div class="grid grid-cols-2 gap-2 text-left bg-amber-50/50 p-3 rounded-lg border border-amber-100 text-xs">
+                        <div>
+                            <p class="font-semibold text-amber-900"><i class="far fa-calendar-check mr-1"></i> Akad Nikah</p>
+                            <p class="text-stone-600 mt-1">Sabtu, 12 Des 2026</p>
+                            <p class="text-stone-500">08:00 WIB</p>
+                        </div>
+                        <div>
+                            <p class="font-semibold text-amber-900"><i class="far fa-clock mr-1"></i> Resepsi</p>
+                            <p class="text-stone-600 mt-1">Sabtu, 12 Des 2026</p>
+                            <p class="text-stone-500">11:00 WIB - Selesai</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Countdown -->
+                    <div class="pt-2">
+                        <p class="text-xs text-stone-500 mb-2">Menghitung Hari:</p>
+                        <div id="timer" class="grid grid-cols-4 gap-1.5 text-center max-w-xs mx-auto">
+                            <div class="bg-amber-800 text-white p-1.5 rounded-lg"><span id="days" class="block font-semibold text-sm">00</span><span class="text-[10px] opacity-80">Hari</span></div>
+                            <div class="bg-amber-800 text-white p-1.5 rounded-lg"><span id="hours" class="block font-semibold text-sm">00</span><span class="text-[10px] opacity-80">Jam</span></div>
+                            <div class="bg-amber-800 text-white p-1.5 rounded-lg"><span id="minutes" class="block font-semibold text-sm">00</span><span class="text-[10px] opacity-80">Menit</span></div>
+                            <div class="bg-amber-800 text-white p-1.5 rounded-lg"><span id="seconds" class="block font-semibold text-sm">00</span><span class="text-[10px] opacity-80">Detik</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ISI 5: LOKASI & MAPS -->
+            <div class="page text-center">
+                <div class="my-auto space-y-4 py-2">
+                    <h3 class="text-xl font-semibold text-amber-800">Lokasi Acara</h3>
+                    <div class="w-12 h-0.5 bg-amber-700 mx-auto rounded-full"></div>
+                    
+                    <div class="space-y-1">
+                        <p class="font-semibold text-stone-800 text-sm">Gedung Pernikahan Utama</p>
+                        <p class="text-xs text-stone-600 max-w-xs mx-auto">Jl. Raya Utama No. 123, Kelurahan, Kecamatan, Kota, Jawa Timur</p>
+                    </div>
+
+                    <a href="https://maps.google.com" target="_blank" class="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-full font-medium text-xs shadow hover:bg-blue-700 transition">
+                        <i class="fas fa-map-marker-alt"></i> Petunjuk Google Maps
+                    </a>
+                </div>
+            </div>
+
+            <!-- ISI 6: KOLOM UCAPAN & FEED UCAPAN PUBLIK -->
+            <div class="page text-left flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-semibold text-amber-800 text-center">Ucapan & Doa Restu</h3>
+                    <div class="w-12 h-0.5 bg-amber-700 mx-auto rounded-full my-2"></div>
+                    
+                    <!-- Form Ucapan -->
+                    <form id="wish-form" onsubmit="submitWish(event)" class="space-y-2.5 my-3">
+                        <div>
+                            <label class="block text-[11px] font-medium text-stone-600 mb-0.5">Nama Anda (Tamu Terverifikasi):</label>
+                            <div class="relative">
+                                <input type="text" id="wish-name" readonly placeholder="Memuat token tamu..." class="w-full px-3 py-1.5 text-xs border rounded-lg focus:outline-none pr-8">
+                                <i id="verified-icon" class="fas fa-check-circle text-blue-500 absolute right-2.5 top-2.5 text-xs hidden" title="Tamu Terverifikasi"></i>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-medium text-stone-600 mb-0.5">Ucapan & Doa:</label>
+                            <textarea id="wish-message" rows="2" placeholder="Tuliskan ucapan Anda..." required class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-1 focus:ring-amber-800 focus:outline-none"></textarea>
+                        </div>
+                        <button type="submit" id="btn-submit" class="w-full py-2 bg-amber-800 text-white text-xs font-medium rounded-lg shadow hover:bg-amber-900 transition flex items-center justify-center gap-1.5">
+                            <i class="fas fa-paper-plane"></i> Kirim Ucapan
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Feed Ucapan -->
+                <div class="mt-2 flex-1 flex flex-col min-h-0 border-t border-stone-200 pt-2">
+                    <p class="text-[11px] font-semibold text-stone-700 mb-1.5 flex items-center justify-between">
+                        <span><i class="fas fa-comments text-amber-800 mr-1"></i> Ucapan Tamu</span>
+                        <span id="wish-count" class="text-[10px] text-stone-400 font-normal">0 ucapan</span>
+                    </p>
+                    <div id="wish-container" class="wish-feed overflow-y-auto space-y-2 pr-1 text-xs max-h-44 flex-1">
+                        <div class="text-center py-4 text-stone-400 italic text-[11px]">
+                            <i class="fas fa-spinner fa-spin mr-1"></i> Memuat ucapan tamu...
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- COVER BELAKANG (ANIMASI SCROLL SLIDE DOWN) -->
+    <!-- ========================================== -->
+    <div id="back-cover" class="cover-overlay scroll-cover hide-back bg-stone-900 text-white flex items-center justify-center p-4">
+        <div class="text-center max-w-md w-full space-y-6 py-8 my-auto">
+            <h2 class="font-script text-6xl text-amber-200">Terima Kasih</h2>
+            <p class="text-xs md:text-sm text-stone-200 leading-relaxed px-4">
+                Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
+            </p>
+            <div class="pt-4 space-y-1">
+                <p class="text-[11px] text-amber-300 uppercase tracking-widest">Kami Yang Berbahagia</p>
+                <p class="text-xs text-stone-300">Kel. Bapak Nama Bapak Pria & Kel. Bapak Nama Bapak Wanita</p>
+                <h3 class="font-script text-4xl text-amber-200 pt-2">Pria & Wanita</h3>
+            </div>
+
+            <button onclick="closeBackCover()" class="mt-6 px-6 py-2.5 bg-amber-700 hover:bg-amber-800 text-white rounded-full font-medium text-xs shadow-lg transition flex items-center justify-center gap-2 mx-auto">
+                <i class="fas fa-arrow-up"></i> Kembali ke Undangan
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let pageFlip = null;
+        let guestToken = null;
+        let isGuestVerified = false;
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initPageFlip();
+            checkGuestToken();
+            loadPublicWishes();
+            startCountdown();
+            
+            let resizeTimeout;
+            window.addEventListener('resize', () => {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    if (pageFlip) {
+                        pageFlip.destroy();
+                        initPageFlip();
+                    }
+                }, 200);
+            });
+        });
+
+        // Mode Flipbook Dinamis
+        function initPageFlip() {
+            const isMobile = window.innerWidth < 768 || window.innerHeight > window.innerWidth;
+            const bookElement = document.getElementById('book');
+
+            let pageWidth, pageHeight;
+
+            if (isMobile) {
+                pageWidth = Math.min(window.innerWidth * 0.88, 420);
+                pageHeight = Math.min(window.innerHeight * 0.82, 650);
+            } else {
+                // Presisi dimensi desktop untuk mode 2-halaman
+                pageWidth = Math.min((window.innerWidth * 0.75) / 2, 420);
+                pageHeight = Math.min(window.innerHeight * 0.82, 600);
+            }
+
+            pageFlip = new St.PageFlip(bookElement, {
+                width: pageWidth,
+                height: pageHeight,
+                size: "fixed",
+                minWidth: 260,
+                maxWidth: 550,
+                minHeight: 380,
+                maxHeight: 750,
+                drawShadow: true,
+                showCover: false,
+                usePortrait: isMobile,
+                maxAngle: 90,
+                mobileScrollSupport: false
+            });
+
+            pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+        }
+
+        // Kontrol Animasi Scroll Cover
+        function openFrontCover() {
+            toggleMusic(true);
+            document.getElementById('front-cover').classList.add('open-front');
+        }
+
+        function closeBackCover() {
+            document.getElementById('back-cover').classList.add('hide-back');
+            pageFlip.flip(0);
+        }
+
+        // Navigasi Tombol Panah
+        function flipPrev() { 
+            const currentPage = pageFlip.getCurrentPageIndex();
+            if (currentPage === 0) {
+                document.getElementById('front-cover').classList.remove('open-front');
+            } else {
+                pageFlip.flipPrev(); 
+            }
+        }
+
+        function flipNext() { 
+            const currentPage = pageFlip.getCurrentPageIndex();
+            const totalPages = pageFlip.getPageCount();
+            const isMobile = window.innerWidth < 768 || window.innerHeight > window.innerWidth;
+
+            // Dalam mode desktop (2 halaman), index halaman terakhir bisa terpaut 1-2 halaman dari total
+            const isLastSpread = isMobile 
+                ? currentPage >= totalPages - 1 
+                : currentPage >= totalPages - 2;
+
+            if (isLastSpread) {
+                document.getElementById('back-cover').classList.remove('hide-back');
+            } else {
+                pageFlip.flipNext(); 
+            }
+        }
+
+        // Token & Wish Verification
+        async function checkGuestToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            guestToken = urlParams.get('guest');
+
+            const guestNameEl = document.getElementById('guest-name');
+            const wishNameInput = document.getElementById('wish-name');
+            const verifiedIcon = document.getElementById('verified-icon');
+
+            if (!guestToken) {
+                guestNameEl.innerHTML = `<span class="text-stone-700 font-normal">Tamu Undangan</span>`;
+                wishNameInput.value = "Tamu (Tidak Terverifikasi)";
+                return;
+            }
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getGuest&token=${encodeURIComponent(guestToken)}`);
+                const result = await response.json();
+
+                if (result.success && result.nama) {
+                    guestNameEl.innerHTML = `<span>${result.nama}</span>`;
+                    wishNameInput.value = result.nama;
+                    verifiedIcon.classList.remove('hidden');
+                    isGuestVerified = true;
+                } else {
+                    guestNameEl.innerHTML = `<span class="text-red-500 font-normal text-xs"><i class="fas fa-exclamation-circle mr-1"></i>Token Tidak Valid</span>`;
+                    wishNameInput.value = "Token Tidak Terverifikasi";
+                }
+            } catch (err) {
+                guestNameEl.innerHTML = `<span class="text-stone-700 font-normal">Tamu Undangan</span>`;
+                wishNameInput.value = "Gagal memuat token";
+            }
+        }
+
+        // Load Wishes
+        async function loadPublicWishes() {
+            const wishContainer = document.getElementById('wish-container');
+            const wishCountEl = document.getElementById('wish-count');
+
+            try {
+                const response = await fetch(`${SCRIPT_URL}?action=getWishes`);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    wishContainer.innerHTML = '';
+                    wishCountEl.innerText = `${result.data.length} ucapan`;
+
+                    if (result.data.length === 0) {
+                        wishContainer.innerHTML = `<p class="text-center text-stone-400 py-3 italic text-[11px]">Belum ada ucapan. Jadilah yang pertama!</p>`;
+                        return;
+                    }
+
+                    result.data.forEach(item => {
+                        renderWishItem(item.nama, item.ucapan, item.timestamp);
+                    });
+                }
+            } catch (err) {
+                wishContainer.innerHTML = `<p class="text-center text-red-400 py-3 text-[11px]">Gagal memuat ucapan tamu.</p>`;
+            }
+        }
+
+        function renderWishItem(nama, ucapan, timestamp, prepend = false) {
+            const wishContainer = document.getElementById('wish-container');
+            const div = document.createElement('div');
+            div.className = "bg-stone-50 p-2 rounded-lg border border-stone-200/80 shadow-2xs space-y-0.5";
+            div.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-stone-800 text-[11px] flex items-center gap-1">
+                        ${nama} <i class="fas fa-check-circle text-blue-500 text-[10px]"></i>
+                    </span>
+                    <span class="text-[9px] text-stone-400">${timestamp || ''}</span>
+                </div>
+                <p class="text-[11px] text-stone-600 leading-snug">${ucapan}</p>
+            `;
+
+            if (prepend && wishContainer.firstChild) {
+                wishContainer.insertBefore(div, wishContainer.firstChild);
+            } else {
+                wishContainer.appendChild(div);
+            }
+        }
+
+        // Submit Wish
+        async function submitWish(e) {
+            e.preventDefault();
+            if (!isGuestVerified) {
+                alert("Maaf, Anda hanya bisa mengirimkan ucapan jika membuka link resmi dengan token terverifikasi.");
+                return;
+            }
+
+            const wishMessageInput = document.getElementById('wish-message');
+            const btnSubmit = document.getElementById('btn-submit');
+            const ucapanText = wishMessageInput.value.trim();
+
+            if (!ucapanText) return;
+
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Mengirim...`;
+
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain' },
+                    body: JSON.stringify({ token: guestToken, ucapan: ucapanText })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    renderWishItem(result.data.nama, result.data.ucapan, result.data.timestamp, true);
+                    wishMessageInput.value = '';
+                    alert("Terima kasih! Ucapan Anda telah berhasil dikirim.");
+                } else {
+                    alert(result.message || "Gagal mengirim ucapan.");
+                }
+            } catch (err) {
+                alert("Terjadi kesalahan koneksi saat mengirim ucapan.");
+            } finally {
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = `<i class="fas fa-paper-plane"></i> Kirim Ucapan`;
+            }
+        }
+
+        // Music Control
+        const music = document.getElementById("bg-music");
+        const musicIcon = document.getElementById("music-icon");
+
+        function toggleMusic(forcePlay = false) {
+            if (forcePlay || music.paused) {
+                music.play().then(() => {
+                    musicIcon.className = "fas fa-disc fa-spin text-amber-700";
+                }).catch(() => {});
+            } else {
+                music.pause();
+                musicIcon.className = "fas fa-music text-stone-700";
+            }
+        }
+
+        // Live Countdown
+        function startCountdown() {
+            const weddingDate = new Date("December 12, 2026 08:00:00").getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+
+                if (distance < 0) return;
+
+                document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
+                document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById("seconds").innerText = Math.floor((distance % (1000 * 60)) / 1000);
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

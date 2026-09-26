@@ -178,7 +178,6 @@
             cursor: pointer;
         }
 
-        /* PERBAIKAN: Style sembunyikan tombol navigasi pada cover */
         .nav-arrow.nav-hidden {
             opacity: 0 !important;
             pointer-events: none !important;
@@ -230,7 +229,6 @@
         <i id="music-icon" class="fas fa-music text-sm"></i>
     </button>
 
-    <!-- DIPERBAIKI: Mengisi class nav-hidden di awal agar sembunyi saat Cover Depan aktif -->
     <button id="prev-btn" onclick="flipPrev()" class="nav-arrow nav-hidden">
         <i class="fas fa-chevron-left text-base md:text-lg"></i>
     </button>
@@ -290,6 +288,7 @@
 
     <script>
         const PAGES_HTML = `
+            <!-- HALAMAN 1: HOLY MATRIMONY -->
             <div class="page">
                 <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
                     <div class="w-full">
@@ -308,6 +307,7 @@
                 </div>
             </div>
 
+            <!-- HALAMAN 2: HARAPAN & DOA -->
             <div class="page">
                 <div class="w-full h-full flex flex-col justify-between items-center py-1 px-1 text-center">
                     <div class="space-y-0.5 w-full">
@@ -326,6 +326,7 @@
                 </div>
             </div>
 
+            <!-- HALAMAN 3: THE BELOVED COUPLE -->
             <div class="page">
                 <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
                     <div class="w-full">
@@ -344,6 +345,35 @@
                 </div>
             </div>
 
+            <!-- HALAMAN 4: GALERI FOTO (DIPINDAHKAN KE HALAMAN 4) -->
+            <div class="page">
+                <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
+                    <div class="space-y-0.5 w-full">
+                        <p class="text-[10px] tracking-[0.2em] uppercase text-amber-800 font-medium">Our Memories</p>
+                        <h3 class="font-serif-title text-xl font-bold text-amber-950">Galeri Foto</h3>
+                        <div class="w-8 h-[1px] bg-amber-700 mx-auto"></div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5 my-auto w-full max-w-xs">
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery1" alt="Galeri 1" class="w-full h-24 object-cover rounded">
+                        </div>
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery2" alt="Galeri 2" class="w-full h-24 object-cover rounded">
+                        </div>
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery3" alt="Galeri 3" class="w-full h-24 object-cover rounded">
+                        </div>
+                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
+                            <img src="https://picsum.photos/300/400?gallery4" alt="Galeri 4" class="w-full h-24 object-cover rounded">
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <p class="text-[10px] text-stone-500 font-serif-title italic font-medium">"Setiap cerita cinta itu indah, namun cerita kita adalah favoritku."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HALAMAN 5: WAKTU ACARA -->
             <div class="page">
                 <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
                     <div class="space-y-0.5 w-full">
@@ -375,6 +405,7 @@
                 </div>
             </div>
 
+            <!-- HALAMAN 6: LOKASI ACARA -->
             <div class="page">
                 <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
                     <div class="space-y-0.5 w-full">
@@ -397,33 +428,7 @@
                 </div>
             </div>
 
-            <div class="page">
-                <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
-                    <div class="space-y-0.5 w-full">
-                        <p class="text-[10px] tracking-[0.2em] uppercase text-amber-800 font-medium">Our Memories</p>
-                        <h3 class="font-serif-title text-xl font-bold text-amber-950">Galeri Foto</h3>
-                        <div class="w-8 h-[1px] bg-amber-700 mx-auto"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-1.5 my-auto w-full max-w-xs">
-                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
-                            <img src="https://picsum.photos/300/400?gallery1" alt="Galeri 1" class="w-full h-24 object-cover rounded">
-                        </div>
-                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
-                            <img src="https://picsum.photos/300/400?gallery2" alt="Galeri 2" class="w-full h-24 object-cover rounded">
-                        </div>
-                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
-                            <img src="https://picsum.photos/300/400?gallery3" alt="Galeri 3" class="w-full h-24 object-cover rounded">
-                        </div>
-                        <div class="p-1 bg-white border border-amber-200/80 rounded-lg shadow-2xs">
-                            <img src="https://picsum.photos/300/400?gallery4" alt="Galeri 4" class="w-full h-24 object-cover rounded">
-                        </div>
-                    </div>
-                    <div class="w-full">
-                        <p class="text-[10px] text-stone-500 font-serif-title italic font-medium">"Setiap cerita cinta itu indah, namun cerita kita adalah favoritku."</p>
-                    </div>
-                </div>
-            </div>
-
+            <!-- HALAMAN 7: UCAPAN & DOA RESTU -->
             <div class="page text-center">
                 <div class="w-full h-full flex flex-col justify-start items-center py-1 text-center overflow-hidden">
                     <div class="w-full shrink-0 mb-1">
@@ -460,6 +465,7 @@
                 </div>
             </div>
 
+            <!-- HALAMAN 8: AMPLOP DIGITAL -->
             <div class="page">
                 <div class="w-full h-full flex flex-col justify-between items-center py-1 text-center">
                     <div class="space-y-0.5 w-full">
@@ -700,7 +706,6 @@
             });
         }
 
-        // PERBAIKAN: Fungsi kontrol visibilitas tombol navigasi
         function updateNavButtonsVisibility() {
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
@@ -708,7 +713,6 @@
             const frontCoverOpen = document.getElementById('front-cover').classList.contains('open-front');
             const backCoverVisible = !document.getElementById('back-cover').classList.contains('hide-back');
 
-            // Jika Cover Depan belum dibuka ATAU Cover Belakang sedang tampil -> Sembunyikan Navigasi
             if (!frontCoverOpen || backCoverVisible) {
                 if (prevBtn) prevBtn.classList.add('nav-hidden');
                 if (nextBtn) nextBtn.classList.add('nav-hidden');
@@ -722,7 +726,7 @@
             if (!isGuestVerified) return;
             toggleMusic(true);
             document.getElementById('front-cover').classList.add('open-front');
-            updateNavButtonsVisibility(); // Munculkan navigasi setelah cover dibuka
+            updateNavButtonsVisibility();
         }
 
         function closeBackCover() {
@@ -731,7 +735,7 @@
                 const lastIndex = pageFlip.getPageCount() - 1;
                 pageFlip.flip(lastIndex);
             }
-            updateNavButtonsVisibility(); // Munculkan navigasi kembali
+            updateNavButtonsVisibility();
         }
 
         function flipPrev() { 
@@ -739,7 +743,7 @@
             const currentPage = pageFlip.getCurrentPageIndex();
             if (currentPage === 0) {
                 document.getElementById('front-cover').classList.remove('open-front');
-                updateNavButtonsVisibility(); // Sembunyikan navigasi karena kembali ke Cover Depan
+                updateNavButtonsVisibility();
             } else {
                 pageFlip.flipPrev(); 
             }
@@ -757,7 +761,7 @@
 
             if (isAtEnd) {
                 document.getElementById('back-cover').classList.remove('hide-back');
-                updateNavButtonsVisibility(); // Sembunyikan navigasi saat Cover Belakang tampil
+                updateNavButtonsVisibility();
             } else {
                 pageFlip.flipNext();
             }

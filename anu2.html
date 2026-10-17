@@ -21,7 +21,6 @@
             --primary-amber: #78350f;
             --scrollbar-thumb: #d4c3ab;
             --cover-bg-light: #faf7f2;
-            --input-readonly-bg: #f5f0e8;
             --input-border: #e2d7c7;
         }
 
@@ -197,13 +196,6 @@
             #next-btn { right: 2rem; }
         }
 
-        input:read-only {
-            background-color: var(--input-readonly-bg);
-            color: var(--text-muted);
-            cursor: not-allowed;
-            border-color: var(--input-border);
-        }
-
         .arch-image {
             border-radius: 120px 120px 12px 12px;
         }
@@ -212,13 +204,15 @@
             pointer-events: auto !important;
             position: relative;
             z-index: 60;
+            user-select: text !important;
+            -webkit-user-select: text !important;
         }
     </style>
 </head>
 <body class="w-screen h-screen flex items-center justify-center relative">
 
     <script>
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwIRZ7WqB3mXQMGsMr81FH8mxp92m8hTaVDfWPtW9FH8iy58lxJE8k3U81snuu0HXkW/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwo8JOSB9Fd-WQp3S351lj6r9BGjPToXQBfMgvrbYDHWvdDJ4W2oP6TjT9gu2EvajX4/exec";
     </script>
 
     <audio id="bg-music" loop>
@@ -237,7 +231,7 @@
     </button>
 
     <div id="front-cover" class="cover-overlay scroll-cover bg-gradient-to-b from-[#faf7f2] via-[#f5efe6] to-[#eae0d0] flex items-center justify-center p-4 text-center">
-        <div class="text-center max-w-md w-full space-y-5 py-8 my-auto relative z-10 flex flex-col items-center justify-center">
+        <div class="text-center max-w-md w-full space-y-6 py-8 my-auto relative z-10 flex flex-col items-center justify-center">
             <div class="space-y-1 w-full">
                 <div class="inline-block px-4 py-1 border-y border-amber-800/30 text-xs tracking-[0.3em] uppercase text-amber-900 font-semibold">
                     The Wedding Of
@@ -246,20 +240,9 @@
             </div>
 
             <div class="w-20 h-[1px] bg-gradient-to-r from-transparent via-amber-700 to-transparent mx-auto"></div>
-            
-            <div class="bg-white/80 backdrop-blur-md border border-amber-200/80 p-5 rounded-2xl shadow-xl mx-auto w-full max-w-xs relative text-center">
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[#faf7f2] px-3 text-[10px] uppercase tracking-widest text-amber-800 font-medium">
-                    Dear Special Guest
-                </div>
-                <p class="text-xs text-stone-500 uppercase tracking-wider mb-2">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                <h2 id="guest-name" class="font-serif-title font-semibold text-stone-800 text-lg md:text-xl flex items-center justify-center gap-2">
-                    <i class="fas fa-spinner fa-spin text-amber-700 text-sm"></i>
-                    <span class="text-stone-400 font-normal italic text-sm">Memuat nama tamu...</span>
-                </h2>
-            </div>
 
-            <button id="btn-open-cover" onclick="openFrontCover()" disabled class="px-8 py-3.5 bg-stone-300 text-stone-500 rounded-full font-medium text-xs tracking-wider uppercase shadow-md transition duration-300 flex items-center justify-center gap-2.5 mx-auto border border-stone-300 cursor-not-allowed">
-                <i class="fas fa-spinner fa-spin text-xs" id="open-btn-icon"></i> <span id="open-btn-text">Memuat Data Tamu...</span>
+            <button id="btn-open-cover" onclick="openFrontCover()" class="px-8 py-3.5 bg-gradient-to-r from-amber-800 to-amber-900 text-amber-50 rounded-full font-medium text-xs tracking-wider uppercase shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center gap-2.5 mx-auto border border-amber-700/50 cursor-pointer">
+                <i class="fas fa-envelope-open text-xs"></i> Buka Undangan
             </button>
         </div>
     </div>
@@ -383,13 +366,13 @@
                     </div>
                     <div class="space-y-0.5 font-serif-title my-auto w-full">
                         <p class="font-bold text-stone-900 text-sm md:text-base">Rumah Pengantin Wanita</p>
-                        <p class="text-[11px] md:text-xs text-stone-600 max-w-xs mx-auto leading-relaxed">Dsn.pogoh Rt01/Rw06,desa bajulan, kec.loceret, kab.nganjuk</p>
+                        <p class="text-[11px] md:text-xs text-stone-600 max-w-xs mx-auto leading-relaxed">Pogoh, Bajulan, Kec. Loceret, Kabupaten Nganjuk, Jawa Timur 64471</p>
                     </div>
-                    <a href="https://www.google.com/maps/search/?api=1&query=-7.756821, 111.861879" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation(); window.open(this.href, '_blank'); return false;" onpointerdown="event.stopPropagation()" ontouchstart="event.stopPropagation()" class="w-full max-w-[210px] mx-auto p-1 bg-white border border-amber-200/80 rounded-xl shadow-sm my-auto block hover:opacity-90 transition relative z-20">
+                    <a href="https://www.google.com/maps/search/?api=1&query=-7.756746, 111.862341" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation(); window.open(this.href, '_blank'); return false;" onpointerdown="event.stopPropagation()" ontouchstart="event.stopPropagation()" class="w-full max-w-[210px] mx-auto p-1 bg-white border border-amber-200/80 rounded-xl shadow-sm my-auto block hover:opacity-90 transition relative z-20">
                         <img src="map2.png" alt="Denah Lokasi Pernikahan" class="w-full h-28 object-cover rounded-lg border border-stone-100">
                     </a>
                     <div class="w-full pt-0.5">
-                        <a href="https://www.google.com/maps/search/?api=1&query=-7.756821, 111.861879" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation(); window.open(this.href, '_blank'); return false;" onpointerdown="event.stopPropagation()" ontouchstart="event.stopPropagation()" class="inline-flex items-center justify-center gap-1.5 px-5 py-2 bg-amber-900 text-amber-50 rounded-full font-medium text-[11px] shadow-md hover:bg-amber-950 transition border border-amber-700 relative z-20">
+                        <a href="https://www.google.com/maps/search/?api=1&query=-7.756746, 111.862341" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation(); window.open(this.href, '_blank'); return false;" onpointerdown="event.stopPropagation()" ontouchstart="event.stopPropagation()" class="inline-flex items-center justify-center gap-1.5 px-5 py-2 bg-amber-900 text-amber-50 rounded-full font-medium text-[11px] shadow-md hover:bg-amber-950 transition border border-amber-700 relative z-20">
                             <i class="fas fa-map-marker-alt text-[10px]"></i> Petunjuk Google Maps
                         </a>
                     </div>
@@ -407,13 +390,13 @@
                         <div>
                             <label class="block text-[11px] font-medium text-stone-600 mb-0.5 text-center">Nama Anda:</label>
                             <div class="relative">
-                                <input type="text" id="wish-name" readonly placeholder="Memuat token tamu..." class="w-full px-3 py-1.5 text-xs border rounded-lg focus:outline-none text-center">
+                                <input type="text" id="wish-name" placeholder="Nama Anda..." class="w-full px-3 py-1.5 text-xs border border-amber-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-amber-800 text-center bg-white">
                                 <i id="verified-icon" class="fas fa-check-circle text-amber-700 absolute right-2.5 top-2 text-xs hidden" title="Tamu Terverifikasi"></i>
                             </div>
                         </div>
                         <div>
                             <label class="block text-[11px] font-medium text-stone-600 mb-0.5 text-center">Ucapan & Doa Restu:</label>
-                            <textarea id="wish-message" rows="2" placeholder="Tuliskan pesan & doa..." required class="w-full px-3 py-1.5 text-xs border rounded-lg focus:ring-1 focus:ring-amber-800 focus:outline-none text-center resize-none bg-white"></textarea>
+                            <textarea id="wish-message" rows="2" placeholder="Tuliskan pesan & doa..." required class="w-full px-3 py-1.5 text-xs border border-amber-200 rounded-lg focus:ring-1 focus:ring-amber-800 focus:outline-none text-center resize-none bg-white"></textarea>
                         </div>
                         <button type="submit" id="btn-submit" class="w-full py-1.5 bg-amber-900 text-amber-50 text-xs font-medium rounded-lg shadow hover:bg-amber-950 transition flex items-center justify-center gap-1.5 mx-auto">
                             <i class="fas fa-paper-plane text-[10px]"></i> Kirim Ucapan
@@ -452,18 +435,18 @@
                                 <i class="fas fa-credit-card text-amber-800 text-xs"></i>
                             </div>
                             <p class="text-stone-800 font-mono font-bold text-xs tracking-wider" id="rekening-1">0891180429</p>
-                            <p class="text-[10px] text-stone-500 font-serif-title">a.n. Ade Bagus Kusuma Wardani</p>
-                            <button onclick="copyToClipboard('1234567890', this)" class="w-full py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] rounded font-medium transition flex items-center justify-center gap-1 mt-1">
+                            <p class="text-[10px] text-stone-500 font-serif-title">a.n. Ade Bagus Kusuma wardani</p>
+                            <button onclick="copyToClipboard('0891180429', this)" class="w-full py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] rounded font-medium transition flex items-center justify-center gap-1 mt-1">
                                 <i class="far fa-copy text-[9px]"></i> <span>Salin No. Rekening</span>
                             </button>
                         </div>
 
                         <div class="bg-white p-2.5 rounded-xl border border-amber-200/80 shadow-2xs space-y-1">
                             <div class="flex items-center justify-between border-b border-amber-100 pb-1">
-                                <span class="font-bold text-amber-950 text-xs">Bank BRI</span>
+                                <span class="font-bold text-amber-950 text-xs">Bank Mandiri</span>
                                 <i class="fas fa-credit-card text-amber-800 text-xs"></i>
                             </div>
-                            <p class="text-stone-800 font-mono font-bold text-xs tracking-wider" id="rekening-2">375301041557531</p>
+                            <p class="text-stone-800 font-mono font-bold text-xs tracking-wider" id="rekening-2">0987654321</p>
                             <p class="text-[10px] text-stone-500 font-serif-title">a.n. Mempelai Wanita</p>
                             <button onclick="copyToClipboard('0987654321', this)" class="w-full py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 text-[10px] rounded font-medium transition flex items-center justify-center gap-1 mt-1">
                                 <i class="far fa-copy text-[9px]"></i> <span>Salin No. Rekening</span>
@@ -478,17 +461,13 @@
         `;
 
         let pageFlip = null;
-        let guestToken = null;
-        let isGuestVerified = false;
-        let cachedGuestName = "";
         let lastIsMobile = null;
         let lastActivePage = 0;
         let isFlipping = false;
 
-        window.addEventListener('DOMContentLoaded', async () => {
+        window.addEventListener('DOMContentLoaded', () => {
             checkAndApplyDeviceMode();
             initBookDOM();
-            await checkGuestToken();
             loadPublicWishes();
             startCountdown();
             initBackgroundSwipe();
@@ -585,14 +564,23 @@
             const wishContainer = document.getElementById('wish-container');
 
             if (wishForm) {
-                const formElements = wishForm.querySelectorAll('input, textarea, button');
                 const eventsToBlock = ['click', 'mousedown', 'pointerdown', 'touchstart', 'touchend', 'keydown', 'keyup', 'keypress', 'focus'];
                 
                 eventsToBlock.forEach(eventType => {
-                    wishForm.addEventListener(eventType, (e) => e.stopPropagation(), true);
-                    formElements.forEach(el => {
-                        el.addEventListener(eventType, (e) => e.stopPropagation(), true);
-                    });
+                    wishForm.addEventListener(eventType, (e) => {
+                        e.stopPropagation();
+                    }, false);
+                });
+
+                const inputs = wishForm.querySelectorAll('input, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('pointerdown', (e) => e.stopPropagation(), false);
+                    input.addEventListener('touchstart', (e) => e.stopPropagation(), false);
+                    input.addEventListener('mousedown', (e) => e.stopPropagation(), false);
+                    input.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        input.focus();
+                    }, false);
                 });
             }
 
@@ -600,18 +588,6 @@
                 ['touchstart', 'touchmove', 'touchend', 'wheel', 'scroll'].forEach(eventType => {
                     wishContainer.addEventListener(eventType, (e) => e.stopPropagation(), { passive: true });
                 });
-            }
-        }
-
-        function updateGuestUI() {
-            const guestNameEl = document.getElementById('guest-name');
-            const wishNameInput = document.getElementById('wish-name');
-            const verifiedIcon = document.getElementById('verified-icon');
-
-            if (isGuestVerified && cachedGuestName) {
-                if (guestNameEl) guestNameEl.innerHTML = `<span>${cachedGuestName}</span>`;
-                if (wishNameInput) wishNameInput.value = cachedGuestName;
-                if (verifiedIcon) verifiedIcon.classList.remove('hidden');
             }
         }
 
@@ -627,7 +603,6 @@
             const parent = document.getElementById('book-container-parent');
             parent.innerHTML = '';
             initBookDOM();
-            updateGuestUI();
 
             if (pageFlip && lastActivePage > 0) {
                 setTimeout(() => {
@@ -697,7 +672,6 @@
         }
 
         function openFrontCover() {
-            if (!isGuestVerified) return;
             toggleMusic(true);
             document.getElementById('front-cover').classList.add('open-front');
             updateNavButtonsVisibility();
@@ -738,67 +712,6 @@
                 updateNavButtonsVisibility();
             } else {
                 pageFlip.flipNext();
-            }
-        }
-
-        async function checkGuestToken() {
-            const urlParams = new URLSearchParams(window.location.search);
-            guestToken = urlParams.get('token') || urlParams.get('guest');
-            
-            const guestNameEl = document.getElementById('guest-name');
-            const wishNameInput = document.getElementById('wish-name');
-            const verifiedIcon = document.getElementById('verified-icon');
-            const openCoverBtn = document.getElementById('btn-open-cover');
-            const openBtnText = document.getElementById('open-btn-text');
-            const openBtnIcon = document.getElementById('open-btn-icon');
-
-            if (!guestToken) {
-                if (guestNameEl) guestNameEl.innerHTML = `<span class="text-red-700 font-normal text-xs">Token Tamu Tidak Ditemukan</span>`;
-                if (wishNameInput) wishNameInput.value = "Tamu (Tidak Ada Token)";
-                if (openCoverBtn) {
-                    openCoverBtn.disabled = true;
-                    openCoverBtn.className = "px-8 py-3.5 bg-stone-300 text-stone-500 rounded-full font-medium text-xs tracking-wider uppercase shadow-md transition duration-300 flex items-center justify-center gap-2.5 mx-auto border border-stone-300 cursor-not-allowed";
-                }
-                if (openBtnText) openBtnText.innerText = "Akses Ditolak (Tanpa Token)";
-                if (openBtnIcon) openBtnIcon.className = "fas fa-ban text-xs";
-                return;
-            }
-
-            try {
-                const response = await fetch(`${SCRIPT_URL}?action=getGuest&token=${encodeURIComponent(guestToken)}`);
-                const result = await response.json();
-
-                if (result.success && result.nama) {
-                    cachedGuestName = result.nama;
-                    isGuestVerified = true;
-                    
-                    updateGuestUI();
-
-                    if (openCoverBtn) {
-                        openCoverBtn.disabled = false;
-                        openCoverBtn.className = "px-8 py-3.5 bg-gradient-to-r from-amber-800 to-amber-900 text-amber-50 rounded-full font-medium text-xs tracking-wider uppercase shadow-xl hover:shadow-2xl hover:scale-105 transition duration-300 flex items-center justify-center gap-2.5 mx-auto border border-amber-700/50 cursor-pointer";
-                    }
-                    if (openBtnText) openBtnText.innerText = "Buka Undangan";
-                    if (openBtnIcon) openBtnIcon.className = "fas fa-envelope-open text-xs";
-                } else {
-                    if (guestNameEl) guestNameEl.innerHTML = `<span class="text-red-700 font-normal text-xs"><i class="fas fa-exclamation-circle mr-1"></i>Token Tidak Valid</span>`;
-                    if (wishNameInput) wishNameInput.value = "Token Tidak Terverifikasi";
-                    if (openCoverBtn) {
-                        openCoverBtn.disabled = true;
-                        openCoverBtn.className = "px-8 py-3.5 bg-stone-300 text-stone-500 rounded-full font-medium text-xs tracking-wider uppercase shadow-md transition duration-300 flex items-center justify-center gap-2.5 mx-auto border border-stone-300 cursor-not-allowed";
-                    }
-                    if (openBtnText) openBtnText.innerText = "Token Tamu Tidak Valid";
-                    if (openBtnIcon) openBtnIcon.className = "fas fa-exclamation-triangle text-xs";
-                }
-            } catch (err) {
-                if (guestNameEl) guestNameEl.innerHTML = `<span class="text-red-700 font-normal text-xs">Gagal Memuat Data Tamu</span>`;
-                if (wishNameInput) wishNameInput.value = "Gagal memuat token";
-                if (openCoverBtn) {
-                    openCoverBtn.disabled = true;
-                    openCoverBtn.className = "px-8 py-3.5 bg-stone-300 text-stone-500 rounded-full font-medium text-xs tracking-wider uppercase shadow-md transition duration-300 flex items-center justify-center gap-2.5 mx-auto border border-stone-300 cursor-not-allowed";
-                }
-                if (openBtnText) openBtnText.innerText = "Koneksi Bermasalah";
-                if (openBtnIcon) openBtnIcon.className = "fas fa-wifi text-xs";
             }
         }
 
@@ -858,7 +771,7 @@
                 div.innerHTML = `
                     <div class="flex items-center justify-between">
                         <span class="font-semibold text-stone-800 text-[10px] flex items-center gap-1 font-serif-title wish-author">
-                            ${nama} <i class="fas fa-check-circle text-amber-700 text-[9px]"></i>
+                            ${nama}
                         </span>
                         <span class="text-[8px] text-stone-400 wish-time">${timestamp || ''}</span>
                     </div>
@@ -882,17 +795,15 @@
                 e.preventDefault();
                 e.stopPropagation();
             }
-            
-            if (!isGuestVerified) {
-                alert("Maaf, Anda hanya bisa mengirimkan ucapan jika membuka link resmi dengan token terverifikasi.");
-                return;
-            }
 
+            const wishNameInput = document.getElementById('wish-name');
             const wishMessageInput = document.getElementById('wish-message');
             const btnSubmit = document.getElementById('btn-submit');
+            
+            const namaText = wishNameInput.value.trim();
             const ucapanText = wishMessageInput.value.trim();
 
-            if (!ucapanText) return;
+            if (!namaText || !ucapanText) return;
 
             btnSubmit.disabled = true;
             btnSubmit.innerHTML = `<i class="fas fa-spinner fa-spin text-[10px]"></i> Mengirim...`;
@@ -901,16 +812,16 @@
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain' },
-                    body: JSON.stringify({ token: guestToken, ucapan: ucapanText })
+                    body: JSON.stringify({ nama: namaText, ucapan: ucapanText })
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
-                    renderWishItem(result.data.nama, result.data.ucapan, result.data.timestamp, true);
+                    renderWishItem(result.data.nama || namaText, result.data.ucapan || ucapanText, result.data.timestamp, true);
                     wishMessageInput.value = '';
                     loadPublicWishes();
-                    alert("Terima kasih! Ucapan Anda telah berhasil diperbarui.");
+                    alert("Terima kasih! Ucapan Anda telah berhasil dikirim.");
                 } else {
                     alert(result.message || "Gagal mengirim ucapan.");
                 }
